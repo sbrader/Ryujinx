@@ -1428,7 +1428,7 @@ namespace Ryujinx.Graphics.Gpu.Image
                 _scaledSetScore = Math.Max(0, _scaledSetScore - 1);
             }
 
-            if (_modifiedStale || Group.HasCopyDependencies)
+            if (_modifiedStale || Group.HasCopyDependencies || Group.HasFlushBuffer)
             {
                 _modifiedStale = false;
                 Group.SignalModifying(this, bound);
@@ -1691,6 +1691,8 @@ namespace Ryujinx.Graphics.Gpu.Image
 
             if (Group.Storage == this)
             {
+                Group.Unmapped();
+
                 Group.ClearModified(unmapRange);
             }
 
